@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { Button } from "@/components/ui/button";
 import useEvent from "@/hooks/useEvent";
+import ReadERC20 from "@/components/readERC20";
 
 declare let window: any;
 
@@ -26,7 +27,7 @@ const Home: NextPage = () => {
 
     // get balance
     provider.getBalance(currentAccount).then((result) => {
-      setBalance(ethers.utils.formatEther(result));
+      setBalance(ethers.formatEther(result));
     });
 
     // get chainId and chainName
@@ -66,26 +67,32 @@ const Home: NextPage = () => {
 
       <div className="flex flex-col space-y-4 w-full">
         {/* TASK 1: connect to local chain according to metamask,and get the account and balance */}
-
-        {currentAccount ? (
-          <Button
-            className="w-full bg-gray-100 rounded-[4px]"
-            onClick={onClickDisconnect}
-          >
-            Account:{currentAccount}
-          </Button>
-        ) : (
-          <Button
-            className="w-full bg-gray-100 rounded-[4px]"
-            onClick={onClickConnect}
-          >
-            Connect MetaMask
-          </Button>
-        )}
-
         <div className="my-4 p-4 w-full border border-gray-200 rounded-lg">
-          <h4 className="text-xl font-bold my-4">Task 1</h4>
-          <p>local chain with hardhat</p>
+          <h4 className="text-xl font-bold my-4">Connect to local chain</h4>
+          {currentAccount ? (
+            <Button
+              className="w-full bg-gray-100 rounded-[4px]"
+              onClick={onClickDisconnect}
+            >
+              Account:{currentAccount}
+            </Button>
+          ) : (
+            <Button
+              className="w-full bg-gray-100 rounded-[4px]"
+              onClick={onClickConnect}
+            >
+              Connect MetaMask
+            </Button>
+          )}
+        </div>
+
+        {/* read ClassToken */}
+        <div className="my-4 p-4 w-full border border-gray-200 rounded-lg">
+          <h4 className="text-xl font-bold my-4">Read ClassToken Info</h4>
+          <ReadERC20
+            addressContract="0x5FbDB2315678afecb367f032d93F642f64180aa3"
+            currentAccount={currentAccount}
+          />
         </div>
 
         <div className="my-4 p-4 w-full border border-gray-200 rounded-lg">
