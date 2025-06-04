@@ -1,2 +1,2 @@
 # qc_dapp
-hardhat + nextJs + ethersJS 
+hardhat + next.js + ethers.js
