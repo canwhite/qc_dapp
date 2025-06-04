@@ -15,3 +15,95 @@ yarn hardhat node # run stand-alone
 yarn hardhat compile # run in-progress
 yarn hardhat ignition deploy ./ignition/modules/deploy.ts
 ```
+
+### about ERC20
+
+```shell
+yarn add @openzeppelin/contracts
+
+```
+
+the most basic usage of ERC20
+
+```
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+contract ClassToken is ERC20 {
+        constructor(uint256 initialSupply)
+          ERC20("ClassToken", "CLT")
+        {
+                _mint(msg.sender, initialSupply);
+        }
+}
+
+```
+
+note that :  
+the first parameter msg.sender is the first account of test accounts of hardhat  
+When the ClassToken contract is deployed, the constructor may mint all the initial tokens to the deployer (i.e., Account #0).  
+eg:
+
+```
+constructor() {
+    _mint(msg.sender, 10000 * 10**18); // msg.sender 是 Account #0
+}
+```
+
+### about **合约地址 vs 账户地址**
+
+| 特性                 | 合约地址                              | 账户地址（如 Account #0）        |
+| -------------------- | ------------------------------------- | -------------------------------- |
+| **生成方式**         | 由部署者地址和随机数（nonce）计算生成 | 由私钥推导得出（或测试网预生成） |
+| **控制权**           | 由合约代码逻辑控制                    | 由私钥持有者控制                 |
+| **是否有代码**       | 有（存储智能合约字节码）              | 无（普通地址）                   |
+| **能否主动发起交易** | ❌ 只能被动响应调用                   | ✔️ 可主动发送交易或调用合约      |
+| **示例用途**         | 存储代币余额、业务逻辑                | 支付 Gas、持有代币/NFT           |
+
+### Run stand-alone testnet to deploy smart contract to it
+
+```shell
+# run node
+yarn hardhat node
+
+# deploy
+yarn hardhat run scripts/deploy_classtoken.ts --network localhost
+
+#interact with ClassToken in hardhat console
+yarn hardhat console  --network localhost
+
+# then:
+formatEther = ethers.formatEther;
+address = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+token = await ethers.getContractAt("ClassToken", address);
+
+totalSupply = await token.totalSupply(); // total supply
+formatEther(totalSupply)
+```
+
+### connect to metamask
+
+firstly, we need connect with local chain  
+Add a custom network in the upper left corner of metamask
+add these data:
+
+```
+网络名称: Hardhat Localhost
+
+RPC URL: http://localhost:8545
+
+链ID: 31337
+
+货币符号: ETH
+```
+
+then, how to add CLT Token：
+
+```
+确保已切换到 Hardhat Localhost 网络
+
+点击 "资产" 选项卡
+
+滚动到底部点击 "导入代币"
+```
