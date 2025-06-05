@@ -28,7 +28,9 @@ export default function ReadERC20({ addressContract, currentAccount }) {
       return;
     }
 
+    //read handle need provider
     const provider = new ethers.BrowserProvider(window.ethereum);
+    //then use contract to read data
     const erc20 = new ethers.Contract(addressContract, abi, provider);
 
     erc20
@@ -47,7 +49,9 @@ export default function ReadERC20({ addressContract, currentAccount }) {
   }, [addressContract]);
 
   const queryTokenBalance = useEvent(async (window: any) => {
+    //read handle need provider
     const provider = new ethers.BrowserProvider(window.ethereum);
+    //then use contract to read data
     const erc20 = new ethers.Contract(addressContract, abi, provider);
     erc20
       .balanceOf(currentAccount)
@@ -67,8 +71,6 @@ export default function ReadERC20({ addressContract, currentAccount }) {
 
   return (
     <div className="space-y-4">
-      {/* space-y-2 是 Tailwind CSS 的一个实用类，用于在子元素之间添加垂直间距 */}
-      {/* 它会在每个子元素的顶部添加 margin-top，除了第一个子元素 */}
       <div className="flex flex-col space-y-2">
         <Text className="w-full">ERC20 Contract: {addressContract}</Text>
         <Text className="w-full">

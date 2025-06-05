@@ -6,6 +6,7 @@ import { ethers } from "ethers";
 import { Button } from "@/components/ui/button";
 import useEvent from "@/hooks/useEvent";
 import ReadERC20 from "@/components/readERC20";
+import TransferERC20 from "@/components/transferERC20";
 
 declare let window: any;
 
@@ -14,6 +15,7 @@ const Home: NextPage = () => {
   const [currentAccount, setCurrentAccount] = useState<string | undefined>();
   const [chainId, setChainId] = useState<number | undefined>();
   const [chainname, setChainName] = useState<string | undefined>();
+
   useEffect(() => {
     if (
       !currentAccount ||
@@ -86,7 +88,7 @@ const Home: NextPage = () => {
           )}
         </div>
 
-        {/* read ClassToken */}
+        {/* TASK 2: read ClassToken */}
         <div className="my-4 p-4 w-full border border-gray-200 rounded-lg">
           <h4 className="text-xl font-bold my-4">Read ClassToken Info</h4>
           <ReadERC20
@@ -95,9 +97,13 @@ const Home: NextPage = () => {
           />
         </div>
 
+        {/* TASK 3: Transfer Classtoken */}
         <div className="my-4 p-4 w-full border border-gray-200 rounded-lg">
-          <h4 className="text-xl font-bold my-4">Task 2</h4>
-          <p>DAPP with React/NextJS/Tailwind</p>
+          <h4 className="text-xl font-bold my-4">Transfer Classtoken</h4>
+          <TransferERC20
+            addressContract="0x5FbDB2315678afecb367f032d93F642f64180aa3"
+            currentAccount={currentAccount}
+          />
         </div>
 
         <div className="my-4 p-4 w-full border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
