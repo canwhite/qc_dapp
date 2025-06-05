@@ -68,7 +68,7 @@ constructor() {
 yarn hardhat node
 
 # deploy
-yarn hardhat run scripts/deploy_classtoken.ts --network localhost
+yarn hardhat ignition deploy ./ignition/modules/deploy_classtoken.ts --network localhost
 
 #interact with ClassToken in hardhat console
 yarn hardhat console  --network localhost
@@ -78,7 +78,7 @@ formatEther = ethers.formatEther;
 address = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
 token = await ethers.getContractAt("ClassToken", address);
 
-totalSupply = await token.totalSupply(); // total supply
+totalSupply = await token.totalSupply();
 formatEther(totalSupply)
 ```
 
@@ -107,3 +107,9 @@ then, how to add CLT Token：
 
 滚动到底部点击 "导入代币"
 ```
+
+### warn
+
+如果你指的是 Hardhat Network（Hardhat 提供的本地开发网络），  
+每次重启 Hardhat Network（例如通过 npx hardhat node 启动的本地节点），它的状态都会重置。  
+Hardhat Network 默认是临时的，数据不会持久化，因此所有已部署的合约都会丢失。你需要重新部署合约。
