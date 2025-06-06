@@ -49,6 +49,7 @@ eg:
 constructor() {
     _mint(msg.sender, 10000 * 10**18); // msg.sender 是 Account #0
 }
+
 ```
 
 ### about **合约地址 vs 账户地址**
@@ -80,6 +81,7 @@ token = await ethers.getContractAt("ClassToken", address);
 
 totalSupply = await token.totalSupply();
 formatEther(totalSupply)
+
 ```
 
 ### connect to metamask
@@ -113,3 +115,7 @@ then, how to add CLT Token：
 如果你指的是 Hardhat Network（Hardhat 提供的本地开发网络），  
 每次重启 Hardhat Network（例如通过 npx hardhat node 启动的本地节点），它的状态都会重置。  
 Hardhat Network 默认是临时的，数据不会持久化，因此所有已部署的合约都会丢失。你需要重新部署合约。
+
+### TODO
+
+部署到测试链
