@@ -116,6 +116,54 @@ then, how to add CLT Token：
 每次重启 Hardhat Network（例如通过 npx hardhat node 启动的本地节点），它的状态都会重置。  
 Hardhat Network 默认是临时的，数据不会持久化，因此所有已部署的合约都会丢失。你需要重新部署合约。
 
-### TODO
+### deploy to sepolia testnet
 
-部署到测试链
+1. setting on hardhat.config.ts
+
+```
+const config: HardhatUserConfig = {
+  solidity: "0.8.28",
+  networks: {
+    sepolia: {
+      url:
+        process.env.SEPOLIA_RPC_URL ||
+        "https://sepolia.infura.io/v3/YOUR_INFURA_PROJECT_ID", // Infura 或 Alchemy RPC URL
+      accounts: [process.env.PRIVATE_KEY], // MetaMask 私钥
+    },
+  },
+};
+
+```
+
+2. deploy
+
+```
+yarn hardhat ignition deploy ./ignition/modules/deploy_classtoken.ts --network sepolia
+
+```
+
+### verification
+
+为了在 Sepolia Etherscan 上验证合约：
+
+1. 安装 Etherscan 插件：
+   ```
+   npm install --save-dev @nomiclabs/hardhat-etherscan
+   ```
+2. 在 hardhat.config.js 中添加：
+   ```
+   require("@nomiclabs/hardhat-etherscan");
+   module.exports = {
+        // ... 其他配置
+        etherscan: {
+                apiKey: process.env.ETHERSCAN_API_KEY // 从 Etherscan 获取
+        }
+   };
+   ```
+   在 .env 中添加 Etherscan API Key：
+   ```
+   ETHERSCAN_API_KEY=your_etherscan_api_key
+   ```
+3. 验证合约：
+   bash
+   npx hardhat verify --network sepolia DEPLOYED_CONTRACT_ADDRESS
